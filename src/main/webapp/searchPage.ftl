@@ -9,13 +9,13 @@
     <tr>
         <th>ID</th>
         <th>Text</th>
-        <th>VideoId</th>
+        <th>Date</th>
     </tr>
 <#list model.commentModel as comment>
     <tr>
         <td>${comment.id}</td>
         <td>${comment.text}</td>
-        <td>${comment.videoId}</td>
+        <td>${comment.addingDate}</td>
     </tr>
 </#list>
 </table>

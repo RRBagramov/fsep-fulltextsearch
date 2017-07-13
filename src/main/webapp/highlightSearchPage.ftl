@@ -9,9 +9,9 @@
     <tr>
         <th>Comment</th>
     </tr>
-<#list model["commentModel"] as comment>
+<#list model.commentModel as comment>
     <tr>
-        <td>${comment.highlightText}</td>
+        <td>${comment.highlight}</td>
     </tr>
 </#list>
 </table>
