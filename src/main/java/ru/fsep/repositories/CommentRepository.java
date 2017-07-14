@@ -14,8 +14,13 @@ import java.util.List;
  */
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     //language=SQL
-    @Query(value = "SELECT * FROM comment WHERE fts @@ to_tsquery('ru', :searchQuery)", nativeQuery = true)
-    List<Comment> findByComment(@Param("searchQuery") String searchComment);
+    @Query(value = "SELECT * FROM comment WHERE fts @@ plainto_tsquery('ru', :searchQuery)", nativeQuery = true)
+    List<Comment> getCommentsBySearchQuerySimple(@Param("searchQuery") String searchQuery);
+
+    @Query(value = "SELECT *" +
+            "FROM comment " +
+            "WHERE comment.text % :searchQuery order by similarity(text, :searchQuery) desc", nativeQuery = true)
+    List<Comment> getCommentsBySearchQueryBySimilarity(@Param("searchQuery") String searchQuery);
 
     // Не получилось сделать через аннотации. Закостылили с помощью EntityManager
     //language=SQL
@@ -25,5 +30,4 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 //            "WHERE fts @@ query)" +
 //            " AS fts_search", nativeQuery = true)
 //    List<Comment> findByCommentWithHighlight(@Param("searchQuery")String searchComment);
-
 }

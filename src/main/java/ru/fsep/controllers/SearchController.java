@@ -25,8 +25,13 @@ public class SearchController {
     private CommentService commentService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public String search(@ModelAttribute("model") ModelMap model, @RequestParam(value = "comment", required = false) String comment) {
-        List<Comment> comments = commentService.getCommentsBySearchQuery(comment.replaceAll("'" + "\\s+", "&" + "'"));
+    public String search(@ModelAttribute("model") ModelMap model, @RequestParam(value = "q", required = false) String q) {
+        List<Comment> comments = commentService.getCommentsBySearchQuerySimple("'" + q + "'");
+
+        if (comments.isEmpty()) {
+            comments = commentService.getCommentsBySearchQueryBySimilarity("'" + q + "'");
+        }
+
         model.addAttribute("commentModel", comments);
         return "searchPage";
     }
