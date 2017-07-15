@@ -29,6 +29,8 @@ public class SearchController {
         List<Comment> comments = commentService.getCommentsBySearchQuerySimple("'" + q + "'");
 
         if (comments.isEmpty()) {
+            String delims = "[ .,?!]+";
+            String[] tokens = q.split(delims);
             comments = commentService.getCommentsBySearchQueryBySimilarity("'" + q + "'");
         }
 

@@ -26,8 +26,7 @@ public class CommentServiceImpl implements CommentService {
 
     //language=SQL
     private final String SQL_SELECT_COMMENTS_BY_SEARCH_QUERY_BY_SIMILARITY_WITH_HEADLINE =
-            "SELECT *," +
-                    " ts_headline('russian', text, plainto_tsquery(:searchQuery), 'StartSel =<mark>,StopSel=</mark>,HighlightAll=True') AS highlight " +
+            "SELECT *, ts_headline('russian', text, plainto_tsquery(:searchQuery), 'StartSel =<mark>,StopSel=</mark>,HighlightAll=True') AS highlight " +
                     "FROM (SELECT " +
                     " *" +
                     " FROM comment" +
@@ -63,12 +62,24 @@ public class CommentServiceImpl implements CommentService {
             comments.add(comment);
         }
         return comments;
-        //return commentRepository.findByCommentWithHighlight(searchComment);
     }
 
     @Override
     public List<Comment> getCommentsBySearchQueryBySimilarity(String searchComment) {
         return commentRepository.getCommentsBySearchQueryBySimilarity(searchComment);
+    }
+
+    @Override
+    public List<Comment> getCorrectedComment(String searchComment) {
+        String newSearchComment = "";
+        String delims = "[ .,?!]+";
+        String[] tokens = searchComment.split(delims);
+
+        for (String token : tokens) {
+            newSearchComment += commentRepository.getCorrectedWord("'" + token + "'") + " ";
+        }
+
+        return getCommentsBySearchQueryWithHeadline("'" + newSearchComment + "'","similarity");
     }
 
 }

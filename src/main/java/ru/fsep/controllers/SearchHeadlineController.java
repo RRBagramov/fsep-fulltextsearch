@@ -29,7 +29,7 @@ public class SearchHeadlineController {
         List<Comment> comments;
         comments = commentService.getCommentsBySearchQueryWithHeadline("'" + q + "'", "simple");
         if (comments.isEmpty()) {
-            comments = commentService.getCommentsBySearchQueryWithHeadline("'" + q + "'", "similarity");
+            comments = commentService.getCorrectedComment(q);
         }
         model.addAttribute("commentModel", comments);
         return "headlineSearchPage";

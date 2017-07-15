@@ -17,10 +17,18 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "SELECT * FROM comment WHERE fts @@ plainto_tsquery('ru', :searchQuery)", nativeQuery = true)
     List<Comment> getCommentsBySearchQuerySimple(@Param("searchQuery") String searchQuery);
 
+    //language=SQL
     @Query(value = "SELECT *" +
             "FROM comment " +
             "WHERE comment.text % :searchQuery order by similarity(text, :searchQuery) desc", nativeQuery = true)
     List<Comment> getCommentsBySearchQueryBySimilarity(@Param("searchQuery") String searchQuery);
+
+    //language=SQL
+    @Query(value = "SELECT " +
+            "word" +
+            " FROM dictionary " +
+            "ORDER BY similarity(word, :searchToken) DESC LIMIT 1", nativeQuery = true)
+    String getCorrectedWord(@Param("searchToken") String token);
 
     // Не получилось сделать через аннотации. Закостылили с помощью EntityManager
     //language=SQL

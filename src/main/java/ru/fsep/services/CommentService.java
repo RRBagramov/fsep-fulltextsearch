@@ -12,7 +12,12 @@ import java.util.List;
 
 public interface CommentService {
     List<Comment> getCommentsBySearchQuerySimple(String searchComment);
+
     List<Comment> getCommentsBySearchQueryWithHeadline(String searchComment, String searchType);
+
     List<Comment> getCommentsBySearchQueryBySimilarity(String searchComment);
+
+    List<Comment> getCorrectedComment(String searchComment);
+
 
 }
