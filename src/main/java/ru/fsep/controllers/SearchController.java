@@ -13,25 +13,22 @@ import ru.fsep.services.CommentService;
 import java.util.List;
 
 /**
- * 12.07.2017
+ * 17.07.2017
  *
  * @author Robert Bagramov.
  */
 
 @Controller
 public class SearchController {
-
     @Autowired
     private CommentService commentService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public String search(@ModelAttribute("model") ModelMap model, @RequestParam(value = "q", required = false) String q) {
-        List<Comment> comments = commentService.getCommentsBySearchQuerySimple("'" + q + "'");
+        List<Comment> comments = commentService.getComments("'" + q + "'");
 
         if (comments.isEmpty()) {
-            String delims = "[ .,?!]+";
-            String[] tokens = q.split(delims);
-            comments = commentService.getCommentsBySearchQueryBySimilarity("'" + q + "'");
+            comments = commentService.getCommentsBySimilarity("'" + q + "'");
         }
 
         model.addAttribute("commentModel", comments);

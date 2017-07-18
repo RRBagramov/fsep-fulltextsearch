@@ -14,7 +14,11 @@
 <#list model.commentModel as comment>
     <tr>
         <td>${comment.id}</td>
-        <td>${comment.text}</td>
+        <#if comment.highlight??>
+            <td>${comment.highlight}</td>
+        <#else>
+            <td>${comment.text}</td>
+        </#if>
         <td>${comment.addingDate}</td>
     </tr>
 </#list>

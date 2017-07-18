@@ -11,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
  *
  * @author Robert Bagramov.
  */
+
 @ComponentScan("ru.fsep")
 @SpringBootApplication
 public class WebApplication extends SpringBootServletInitializer {
